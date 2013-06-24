@@ -1,0 +1,62 @@
+ACx1
+ACx2
+AN
+ANC
+ANL
+ANM
+B
+BLA
+BMA
+C1
+cc
+CgCx1
+CgCx2
+Cl
+CPu
+CxA1
+DPCx
+EA
+EctCx
+EGP
+EnPirN
+FrACx
+FrCx
+Hip CA1
+Hip CA3
+Hip DG
+IC
+ILCx
+InCx
+IPAC
+LEntCx
+LSN
+MCx1
+MCx2
+MEntCx
+Misc1
+MS
+NAcbC
+NAcbSh
+OlfTub
+OrbCxL
+OrbCxM
+OrbCxV
+PirCx
+PLd
+PRhCx
+PrLCx
+PtACx
+RSCx
+SCx1
+SCx2
+SHi
+ST
+SubD
+SubV
+TACx
+VCx1
+VCx2
+VP
+Whole Section
+Whole Left
+Whole Right

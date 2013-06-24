@@ -1,0 +1,15 @@
+button_path                     C:\Documents and Settings\stratfoj.UNIVERSITY\My Documents\MATLAB\AtlasFitter5
+raw_atlas_path                  C:\Documents and Settings\stratfoj.UNIVERSITY\My Documents\MATLAB\Atlas Tracer\Images for Atlas Tracer
+default_atlas_path              C:\Documents and Settings\stratfoj.UNIVERSITY\My Documents\MATLAB\Atlas Tracer\Images for Atlas Tracer
+fast_speed                      100
+lowpass_filter_size             30
+lowpass_standard_deviation      10
+morphological_filter_size       100
+erased_area_color               black
+surface_warp                    add centroid
+analyze_user_regions            none
+analyze_image                   wholeimage_findedge
+analyze_whole_section           none
+analyze_whole_leftright         wholeleftright_findcells
+analyze_individual_regions      individualregions_countcells
+
