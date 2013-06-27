@@ -660,8 +660,6 @@ testImage = imread(handles.IMname);
 handles.merge = testImage;
 [rows,cols,~] = size(handles.merge);
 
-handles.globalImage = testImage;
-
 handles.r = cat(3, handles.merge(:,:,1), zeros(rows,cols), zeros(rows,cols));
 handles.g = cat(3, zeros(rows,cols), handles.merge(:,:,2), zeros(rows,cols));
 handles.b = cat(3, zeros(rows,cols), zeros(rows,cols), handles.merge(:,:,3));
@@ -1053,24 +1051,17 @@ function horzvert_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns horzvert contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from horzvert
 
-contents = cellstr(get(hObject,'String'));
-getSelection = contents{get(hObject,'Value')};
+getSelection = cellstr(get(hObject,'String'));
+
+Horiztonal Flip
+Vertical Flip
+
 
 if strcmp(getSelection,'Horizontal Flip')
-    axes(handles.ImageShow);
-    origImage = handles.globalImage;
-    flipImage = flipdim(origImage,2);
-    image(flipImage);
-    set(handles.ImageShow,'XTick',[]);
-    set(handles.ImageShow,'YTick',[]);
-elseif strcmp(getSelection,'Vertical Flip')
-    axes(handles.ImageShow);
-    origImage = handles.globalImage;
-    flipImage = flipdim(origImage,1);
-    image(flipImage);
-    set(handles.ImageShow,'XTick',[]);
-    set(handles.ImageShow,'YTick',[]); 
-end
+    
+
+axes(handles.ImageShow);
+image(handles.merge);
 
 % --- Executes during object creation, after setting all properties.
 function horzvert_CreateFcn(hObject, eventdata, handles)
