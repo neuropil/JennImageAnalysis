@@ -22,7 +22,7 @@ function varargout = JSImageGUI(varargin)
 
 % Edit the above text to modify the response to help JSImageGUI
 
-% Last Modified by GUIDE v2.5 26-Jun-2013 18:55:09
+% Last Modified by GUIDE v2.5 29-Jun-2013 22:40:58
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -947,9 +947,11 @@ function redradio_Callback(hObject, eventdata, handles)
 
 radioVal = get(hObject,'Value');
 
+handles.globalImage = handles.r;
+
 if radioVal
     axes(handles.ImageShow);
-    image(handles.r);   
+    image(handles.globalImage);   
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
     
@@ -973,6 +975,8 @@ function greenradio_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of greenradio
 radioVal = get(hObject,'Value');
+
+handles.globalImage = handles.g;
 
 if radioVal
     axes(handles.ImageShow);
@@ -1000,6 +1004,8 @@ function blueradio_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of blueradio
 radioVal = get(hObject,'Value');
+
+handles.globalImage = handles.b;
 
 if radioVal
     axes(handles.ImageShow);
@@ -1029,6 +1035,8 @@ function mergeradio_Callback(hObject, eventdata, handles)
 
 radioVal = get(hObject,'Value');
 
+handles.globalImage = handles.merge;
+
 if radioVal
     axes(handles.ImageShow);
     image(handles.merge);
@@ -1043,6 +1051,8 @@ if radioVal
     zoom on;
 end
 
+guidata(hObject, handles);
+
 
 % --- Executes on selection change in horzvert.
 function horzvert_Callback(hObject, eventdata, handles)
@@ -1054,23 +1064,28 @@ function horzvert_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from horzvert
 
 contents = cellstr(get(hObject,'String'));
+
 getSelection = contents{get(hObject,'Value')};
 
-if strcmp(getSelection,'Horizontal Flip')
-    axes(handles.ImageShow);
-    origImage = handles.globalImage;
-    flipImage = flipdim(origImage,2);
-    image(flipImage);
+if strcmp(getSelection, 'Horizontal Flip')
+    handles.globalImage = flipdim(handles.globalImage, 2);
+    
+    axes(handles.ImageShow)
+    imshow(handles.globalImage)
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
-elseif strcmp(getSelection,'Vertical Flip')
-    axes(handles.ImageShow);
-    origImage = handles.globalImage;
-    flipImage = flipdim(origImage,1);
-    image(flipImage);
+    
+elseif strcmp(getSelection, 'Vertical Flip')
+    handles.globalImage = flipdim(handles.globalImage, 1);
+    axes(handles.ImageShow)
+    imshow(handles.globalImage)
     set(handles.ImageShow,'XTick',[]);
-    set(handles.ImageShow,'YTick',[]); 
+    set(handles.ImageShow,'YTick',[]);
+     
 end
+
+
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function horzvert_CreateFcn(hObject, eventdata, handles)
@@ -1085,7 +1100,55 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+% --- Executes on selection change in rotateme.
+function rotateme_Callback(hObject, eventdata, handles)
+% hObject    handle to rotateme (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Hints: contents = cellstr(get(hObject,'String')) returns rotateme contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from rotateme
+contents = cellstr(get(hObject,'String'));
+
+getSelection = contents{get(hObject,'Value')};
+
+angle = str2double(getSelection);
+
+if angle == 90
+    axes(handles.ImageShow)
+    handles.globalImage = imrotate(handles.globalImage,angle);
+    imshow(handles.globalImage)
+    set(handles.ImageShow,'XTick',[]);
+    set(handles.ImageShow,'YTick',[]);
+    
+elseif angle == 180
+    axes(handles.ImageShow)
+    handles.globalImage = imrotate(handles.globalImage,angle);
+    imshow(handles.globalImage)
+    set(handles.ImageShow,'XTick',[]);
+    set(handles.ImageShow,'YTick',[]);
+      
+elseif angle == 270
+    axes(handles.ImageShow)
+    handles.globalImage = imrotate(handles.globalImage,angle);
+    imshow(handles.globalImage)
+    set(handles.ImageShow,'XTick',[]);
+    set(handles.ImageShow,'YTick',[]);
+end
+
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function rotateme_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to rotateme (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
 
@@ -1122,6 +1185,9 @@ end
 % 
 % reset_bp = get(handles.backpercentVal,'String');
 % set(handles.sl_bp,'Value',str2double(reset_bp));
+
+
+
 
 
 
