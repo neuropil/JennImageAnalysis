@@ -77,6 +77,7 @@ set(handles.mergeradio,'Enable','off')
 set(handles.horzvert,'Enable','off')
 
 set(handles.rotateme,'Enable','off')
+set(handles.loadUserSettings,'Enable','off');
 
 % Update handles structure
 guidata(hObject, handles);
@@ -660,13 +661,13 @@ axes(handles.ImageShow);
 testImage = imread(handles.IMname);
 
 handles.merge = testImage;
-[rows,cols,~] = size(handles.merge);
+[handles.IMrows,handles.IMcols,~] = size(handles.merge);
 
 handles.globalImage = testImage;
 
-handles.r = cat(3, handles.merge(:,:,1), zeros(rows,cols), zeros(rows,cols));
-handles.g = cat(3, zeros(rows,cols), handles.merge(:,:,2), zeros(rows,cols));
-handles.b = cat(3, zeros(rows,cols), zeros(rows,cols), handles.merge(:,:,3));
+handles.r = cat(3, handles.merge(:,:,1), zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols));
+handles.g = cat(3, zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,2), zeros(handles.IMrows,handles.IMcols));
+handles.b = cat(3, zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,3));
 
 image(handles.merge);
 set(handles.ImageShow,'XTick',[]);
@@ -676,6 +677,14 @@ set(handles.mergeradio,'Value',1)
 set(handles.redradio,'Value',0)
 set(handles.greenradio,'Value',0)
 set(handles.blueradio,'Value',0)
+
+handles.imageFigure = figure('Position',[352 183 1366 762]);
+
+imageAxes = axes;
+
+imshow(handles.merge);
+set(imageAxes,'XTick',[]);
+set(imageAxes,'YTick',[]);
 
 zoom on;
 
@@ -705,13 +714,6 @@ for i = 1:size(handles.merge,3);
 end
 
 [handles.borders,~] = bwboundaries(handles.mask);
-
-
-
-
-
-
-
 
 
 
@@ -1162,15 +1164,15 @@ function setUserparams_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-set(handles.msw_user,'String',get(handles.minwatersizeVal,'String'));
-set(handles.c_user,'String',get(handles.cellVal,'String'));
-set(handles.mics_user,'String',get(handles.mincellsizeVal,'String'));
-set(handles.macs_user,'String',get(handles.maxcellsizeVal,'String'));
-set(handles.b_user,'String',get(handles.boundaryVal,'String'));
-set(handles.bsi_user,'String',get(handles.blursizeVal,'String'));
-set(handles.bsp_user,'String',get(handles.blurspreadVal,'String'));
-set(handles.cp_user,'String',get(handles.cellpixelsVal,'String'));
-set(handles.bp_user,'String',get(handles.backpercentVal,'String'));
+set(handles.minwatersizeVal,'String',get(handles.msw_user,'String'));
+set(handles.cellVal,'String',get(handles.c_user,'String'));
+set(handles.mincellsizeVal,'String',get(handles.mics_user,'String'));
+set(handles.maxcellsizeVal,'String',get(handles.macs_user,'String'));
+set(handles.boundaryVal,'String',get(handles.b_user,'String'));
+set(handles.blursizeVal,'String',get(handles.bsi_user,'String'));
+set(handles.blurspreadVal,'String',get(handles.bsp_user,'String'));
+set(handles.cellpixelsVal,'String',get(handles.cp_user,'String'));
+set(handles.backpercentVal,'String',get(handles.bp_user,'String'));
 
 % --- Executes on button press in cellMasktog.
 function cellMasktog_Callback(hObject, eventdata, handles)
@@ -1209,6 +1211,8 @@ handles.UserSave.(strcat('set',num2str(UserSaveNum))).blurspreadVal = get(handle
 handles.UserSave.(strcat('set',num2str(UserSaveNum))).cellpixelsVal = get(handles.cellpixelsVal,'String');
 handles.UserSave.(strcat('set',num2str(UserSaveNum))).backpercentVal = get(handles.backpercentVal,'String');
 
+set(handles.loadUserSettings,'Enable','on');
+
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -1241,17 +1245,27 @@ getSelection = contents{get(hObject,'Value')};
 
 UserSaveNum = str2double(getSelection(end));
 
-loadUserParams = handles.UserSave.(strcat('set',num2str(UserSaveNum)));
+setName = strcat('set',num2str(UserSaveNum)); 
 
-set(handles.msw_user,'String',loadUserParams.minwatersizeVal);
-set(handles.c_user,'String',loadUserParams.cellVal);
-set(handles.mics_user,'String',loadUserParams.mincellsizeVal);
-set(handles.macs_user,'String',loadUserParams.maxcellsizeVal);
-set(handles.b_user,'String',loadUserParams.boundaryVal);
-set(handles.bsi_user,'String',loadUserParams.blursizeVal);
-set(handles.bsp_user,'String',loadUserParams.blurspreadVal);
-set(handles.cp_user,'String',loadUserParams.cellpixelsVal);
-set(handles.bp_user,'String',loadUserParams.backpercentVal);
+if ~isfield(handles,'UserSave')
+    warndlg('No Settings Saved','!! Warning !!')
+    
+elseif ~isfield(handles.UserSave,setName)  
+    warndlg('No settings saved for this User Number','!! Warning !!')
+    
+else
+    loadUserParams = handles.UserSave.(strcat('set',num2str(UserSaveNum)));
+    
+    set(handles.msw_user,'String',loadUserParams.minwatersizeVal);
+    set(handles.c_user,'String',loadUserParams.cellVal);
+    set(handles.mics_user,'String',loadUserParams.mincellsizeVal);
+    set(handles.macs_user,'String',loadUserParams.maxcellsizeVal);
+    set(handles.b_user,'String',loadUserParams.boundaryVal);
+    set(handles.bsi_user,'String',loadUserParams.blursizeVal);
+    set(handles.bsp_user,'String',loadUserParams.blurspreadVal);
+    set(handles.cp_user,'String',loadUserParams.cellpixelsVal);
+    set(handles.bp_user,'String',loadUserParams.backpercentVal);
+end
 
 
 % --- Executes during object creation, after setting all properties.
