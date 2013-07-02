@@ -22,7 +22,7 @@ function varargout = JSImageGUI(varargin)
 
 % Edit the above text to modify the response to help JSImageGUI
 
-% Last Modified by GUIDE v2.5 29-Jun-2013 22:40:58
+% Last Modified by GUIDE v2.5 02-Jul-2013 15:24:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,6 +75,8 @@ set(handles.greenradio,'Enable','off')
 set(handles.blueradio,'Enable','off')
 set(handles.mergeradio,'Enable','off')
 set(handles.horzvert,'Enable','off')
+
+set(handles.rotateme,'Enable','off')
 
 % Update handles structure
 guidata(hObject, handles);
@@ -682,6 +684,7 @@ set(handles.greenradio,'Enable','on')
 set(handles.blueradio,'Enable','on')
 set(handles.mergeradio,'Enable','on')
 set(handles.horzvert,'Enable','on')
+set(handles.rotateme,'Enable','on')
 
 guidata(hObject, handles);
 
@@ -1153,6 +1156,116 @@ end
 
 
 
+% --- Executes on button press in setUserparams.
+function setUserparams_Callback(hObject, eventdata, handles)
+% hObject    handle to setUserparams (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+set(handles.msw_user,'String',get(handles.minwatersizeVal,'String'));
+set(handles.c_user,'String',get(handles.cellVal,'String'));
+set(handles.mics_user,'String',get(handles.mincellsizeVal,'String'));
+set(handles.macs_user,'String',get(handles.maxcellsizeVal,'String'));
+set(handles.b_user,'String',get(handles.boundaryVal,'String'));
+set(handles.bsi_user,'String',get(handles.blursizeVal,'String'));
+set(handles.bsp_user,'String',get(handles.blurspreadVal,'String'));
+set(handles.cp_user,'String',get(handles.cellpixelsVal,'String'));
+set(handles.bp_user,'String',get(handles.backpercentVal,'String'));
+
+% --- Executes on button press in cellMasktog.
+function cellMasktog_Callback(hObject, eventdata, handles)
+% hObject    handle to cellMasktog (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cellMasktog
+
+
+
+
+% --- Executes on selection change in saveUserSettings.
+function saveUserSettings_Callback(hObject, eventdata, handles)
+% hObject    handle to saveUserSettings (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns saveUserSettings contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from saveUserSettings
+
+contents = cellstr(get(hObject,'String'));
+
+getSelection = contents{get(hObject,'Value')};
+
+UserSaveNum = str2double(getSelection(end));
+
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).minwatersizeVal = get(handles.minwatersizeVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).cellVal = get(handles.cellVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).mincellsizeVal = get(handles.mincellsizeVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).maxcellsizeVal = get(handles.maxcellsizeVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).boundaryVal = get(handles.boundaryVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).blursizeVal = get(handles.blursizeVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).blurspreadVal = get(handles.blurspreadVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).blurspreadVal = get(handles.blurspreadVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).cellpixelsVal = get(handles.cellpixelsVal,'String');
+handles.UserSave.(strcat('set',num2str(UserSaveNum))).backpercentVal = get(handles.backpercentVal,'String');
+
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function saveUserSettings_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to saveUserSettings (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+
+% --- Executes on selection change in loadUserSettings.
+function loadUserSettings_Callback(hObject, eventdata, handles)
+% hObject    handle to loadUserSettings (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns loadUserSettings contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from loadUserSettings
+
+contents = cellstr(get(hObject,'String'));
+
+getSelection = contents{get(hObject,'Value')};
+
+UserSaveNum = str2double(getSelection(end));
+
+loadUserParams = handles.UserSave.(strcat('set',num2str(UserSaveNum)));
+
+set(handles.msw_user,'String',loadUserParams.minwatersizeVal);
+set(handles.c_user,'String',loadUserParams.cellVal);
+set(handles.mics_user,'String',loadUserParams.mincellsizeVal);
+set(handles.macs_user,'String',loadUserParams.maxcellsizeVal);
+set(handles.b_user,'String',loadUserParams.boundaryVal);
+set(handles.bsi_user,'String',loadUserParams.blursizeVal);
+set(handles.bsp_user,'String',loadUserParams.blurspreadVal);
+set(handles.cp_user,'String',loadUserParams.cellpixelsVal);
+set(handles.bp_user,'String',loadUserParams.backpercentVal);
+
+
+% --- Executes during object creation, after setting all properties.
+function loadUserSettings_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to loadUserSettings (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
 % % --- Executes on button press in set_sliders.
 % function set_sliders_Callback(hObject, eventdata, handles)
 % % hObject    handle to set_sliders (see GCBO)
@@ -1185,6 +1298,18 @@ end
 % 
 % reset_bp = get(handles.backpercentVal,'String');
 % set(handles.sl_bp,'Value',str2double(reset_bp));
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
