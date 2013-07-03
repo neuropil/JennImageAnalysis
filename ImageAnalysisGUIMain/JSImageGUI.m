@@ -97,9 +97,9 @@ function varargout = JSImageGUI_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-
-
-
+%-------------------------------------------------------------------------%
+%----------------------------PARAMETERS-----------------------------------%
+%-------------------------------------------------------------------------%
 
 %--------------------Minimum Water Size-----------------------------------%
 
@@ -669,7 +669,7 @@ handles.r = cat(3, handles.merge(:,:,1), zeros(handles.IMrows,handles.IMcols), z
 handles.g = cat(3, zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,2), zeros(handles.IMrows,handles.IMcols));
 handles.b = cat(3, zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,3));
 
-image(handles.merge);
+imshow(handles.merge);
 set(handles.ImageShow,'XTick',[]);
 set(handles.ImageShow,'YTick',[]);
 
@@ -677,14 +677,6 @@ set(handles.mergeradio,'Value',1)
 set(handles.redradio,'Value',0)
 set(handles.greenradio,'Value',0)
 set(handles.blueradio,'Value',0)
-
-handles.imageFigure = figure('Position',[352 183 1366 762]);
-
-imageAxes = axes;
-
-imshow(handles.merge);
-set(imageAxes,'XTick',[]);
-set(imageAxes,'YTick',[]);
 
 zoom on;
 
@@ -715,8 +707,6 @@ end
 
 [handles.borders,~] = bwboundaries(handles.mask);
 
-
-
 guidata(hObject, handles);
 
 
@@ -736,15 +726,36 @@ set(handles.minwatersizeVal,'String','30');
 set(handles.sl_mws,'Value',30);
 
 set(handles.cellVal,'String','0.05');
+set(handles.sl_c,'Value',0.05);
+
 set(handles.mincellsizeVal,'String','2');
+set(handles.sl_mcs,'Value',2);
+
 set(handles.maxcellsizeVal,'String','40');
+set(handles.sl_macs,'Value',40);
+
 set(handles.boundaryVal,'String','0');
+set(handles.sl_b,'Value',0);
+
 set(handles.blursizeVal,'String','5');
+set(handles.sl_bs,'Value',5);
+
 set(handles.blurspreadVal,'String','1');
+set(handles.sl_bsp,'Value',1);
+
 set(handles.cellpixelsVal,'String','16');
+set(handles.sl_cp,'Value',16);
+
 set(handles.backpercentVal,'String','0.16');
+set(handles.sl_bp,'Value',0.16);
+
 set(handles.cellsignVal,'String','1');
+set(handles.cellsignTog, 'BackgroundColor',[1 1 0])
+set(handles.cellsignTog,'Value', 1);
+
 set(handles.findedgeVal,'String','1');
+set(handles.findedgeTog, 'BackgroundColor',[1 1 0])
+set(handles.findedgeTog,'Value', 1);
 
 guidata(hObject, handles);
 
@@ -940,8 +951,6 @@ set(handles.cellCounttext,'String',num2str(handles.x.cellcount));
 guidata(hObject, handles);
 
 
-
-
 % --- Executes on button press in redradio.
 function redradio_Callback(hObject, eventdata, handles)
 % hObject    handle to redradio (see GCBO)
@@ -956,7 +965,7 @@ handles.globalImage = handles.r;
 
 if radioVal
     axes(handles.ImageShow);
-    image(handles.globalImage);   
+    imshow(handles.globalImage);   
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
     
@@ -985,7 +994,7 @@ handles.globalImage = handles.g;
 
 if radioVal
     axes(handles.ImageShow);
-    image(handles.g);
+    imshow(handles.g);
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
     
@@ -993,7 +1002,7 @@ if radioVal
     set(handles.redradio,'Value',0)
     set(handles.greenradio,'Value',1)
     set(handles.blueradio,'Value',0)
-    
+
     handles.image2analyze = handles.g;
     
     zoom on;
@@ -1014,7 +1023,7 @@ handles.globalImage = handles.b;
 
 if radioVal
     axes(handles.ImageShow);
-    image(handles.b);
+    imshow(handles.b);
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
     
@@ -1022,7 +1031,7 @@ if radioVal
     set(handles.redradio,'Value',0)
     set(handles.greenradio,'Value',0)
     set(handles.blueradio,'Value',1)
-    
+
     handles.image2analyze = handles.b;
     
     zoom on;
@@ -1044,7 +1053,7 @@ handles.globalImage = handles.merge;
 
 if radioVal
     axes(handles.ImageShow);
-    image(handles.merge);
+    imshow(handles.merge);
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
     
@@ -1082,6 +1091,7 @@ if strcmp(getSelection, 'Horizontal Flip')
     
 elseif strcmp(getSelection, 'Vertical Flip')
     handles.globalImage = flipdim(handles.globalImage, 1);
+    
     axes(handles.ImageShow)
     imshow(handles.globalImage)
     set(handles.ImageShow,'XTick',[]);
@@ -1121,6 +1131,7 @@ angle = str2double(getSelection);
 
 if angle == 90
     axes(handles.ImageShow)
+    
     handles.globalImage = imrotate(handles.globalImage,angle);
     imshow(handles.globalImage)
     set(handles.ImageShow,'XTick',[]);
@@ -1128,6 +1139,7 @@ if angle == 90
     
 elseif angle == 180
     axes(handles.ImageShow)
+    
     handles.globalImage = imrotate(handles.globalImage,angle);
     imshow(handles.globalImage)
     set(handles.ImageShow,'XTick',[]);
@@ -1135,10 +1147,12 @@ elseif angle == 180
       
 elseif angle == 270
     axes(handles.ImageShow)
+    
     handles.globalImage = imrotate(handles.globalImage,angle);
     imshow(handles.globalImage)
     set(handles.ImageShow,'XTick',[]);
     set(handles.ImageShow,'YTick',[]);
+    
 end
 
 guidata(hObject, handles);
@@ -1165,14 +1179,33 @@ function setUserparams_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 set(handles.minwatersizeVal,'String',get(handles.msw_user,'String'));
+set(handles.sl_mws,'Value',str2double(get(handles.msw_user,'String')));
+
 set(handles.cellVal,'String',get(handles.c_user,'String'));
+set(handles.sl_c,'Value',str2double(get(handles.c_user,'String')));
+
 set(handles.mincellsizeVal,'String',get(handles.mics_user,'String'));
+set(handles.sl_mcs,'Value',str2double(get(handles.mics_user,'String')));
+
 set(handles.maxcellsizeVal,'String',get(handles.macs_user,'String'));
+set(handles.sl_macs,'Value',str2double(get(handles.mics_user,'String')));
+
 set(handles.boundaryVal,'String',get(handles.b_user,'String'));
+set(handles.sl_b,'Value',str2double(get(handles.mics_user,'String')));
+
 set(handles.blursizeVal,'String',get(handles.bsi_user,'String'));
+set(handles.sl_bs,'Value',str2double(get(handles.mics_user,'String')));
+
 set(handles.blurspreadVal,'String',get(handles.bsp_user,'String'));
+set(handles.sl_bsp,'Value',str2double(get(handles.mics_user,'String')));
+
 set(handles.cellpixelsVal,'String',get(handles.cp_user,'String'));
+set(handles.sl_cp,'Value',str2double(get(handles.mics_user,'String')));
+
 set(handles.backpercentVal,'String',get(handles.bp_user,'String'));
+set(handles.sl_bp,'Value',str2double(get(handles.mics_user,'String')));
+
+guidata(hObject, handles);
 
 % --- Executes on button press in cellMasktog.
 function cellMasktog_Callback(hObject, eventdata, handles)
