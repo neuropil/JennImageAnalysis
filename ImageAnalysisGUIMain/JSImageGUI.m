@@ -22,7 +22,7 @@ function varargout = JSImageGUI(varargin)
 
 % Edit the above text to modify the response to help JSImageGUI
 
-% Last Modified by GUIDE v2.5 02-Jul-2013 15:24:24
+% Last Modified by GUIDE v2.5 04-Jul-2013 00:00:49
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -144,8 +144,8 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 set(hObject, 'SliderStep', [0.01 0.1])
-set(hObject,'Min',0)
-set(hObject,'Max',90)
+set(hObject,'Min',10)
+set(hObject,'Max',150)
 set(hObject,'Value',30)
 
 
@@ -196,8 +196,8 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 set(hObject, 'SliderStep', [0.01 0.1])
-set(hObject,'Min',0)
-set(hObject,'Max',0.5)
+set(hObject,'Min',0.01)
+set(hObject,'Max',0.3)
 set(hObject,'Value',0.05)
 
 
@@ -246,10 +246,10 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.05 0.25])
-set(hObject,'Min',0)
-set(hObject,'Max',20)
-set(hObject,'Value',2)
+set(hObject,'SliderStep', [0.03 0.3])
+set(hObject,'Min',3)
+set(hObject,'Max',30)
+set(hObject,'Value',3)
 
 
 %--------------------Maximum Cell Size------------------------------------%
@@ -303,7 +303,7 @@ end
 
 set(hObject,'SliderStep', [0.01 0.1])
 set(hObject,'Min',20)
-set(hObject,'Max',80)
+set(hObject,'Max',100)
 set(hObject,'Value',40)
 
 
@@ -351,9 +351,9 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.05 0.25])
+set(hObject,'SliderStep', [0.001 0.01])
 set(hObject,'Min',0)
-set(hObject,'Max',20)
+set(hObject,'Max',0.01)
 set(hObject,'Value',0)
 
 
@@ -403,8 +403,8 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 set(hObject,'SliderStep', [0.05 0.25])
-set(hObject,'Min',0)
-set(hObject,'Max',40)
+set(hObject,'Min',3)
+set(hObject,'Max',15)
 set(hObject,'Value',5)
 
 
@@ -457,7 +457,7 @@ end
 
 set(hObject,'SliderStep', [0.05 0.25])
 set(hObject,'Min',0)
-set(hObject,'Max',20)
+set(hObject,'Max',10)
 set(hObject,'Value',1)
 
 
@@ -512,8 +512,8 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 set(hObject,'SliderStep', [0.01 0.1])
-set(hObject,'Min',0)
-set(hObject,'Max',60)
+set(hObject,'Min',3)
+set(hObject,'Max',30)
 set(hObject,'Value',16)
 
 
@@ -562,8 +562,8 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 set(hObject,'SliderStep', [0.01 0.1])
-set(hObject,'Min',0)
-set(hObject,'Max',1)
+set(hObject,'Min',0.1)
+set(hObject,'Max',0.6)
 set(hObject,'Value',0.16)
 
 
@@ -645,73 +645,6 @@ set(handles.findedgeVal,'String',num2str(findedgePress));
 %-------------------------------------------------------------------------%
 %------------------------------BUTTONS------------------------------------%
 %-------------------------------------------------------------------------%
-
-% --- Executes on button press in loadimageButton.
-function loadimageButton_Callback(hObject, eventdata, handles)
-% hObject    handle to loadimageButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-[handles.IMname,handles.PathName,~] = uigetfile({'*.tif;*.tiff',...
-    'Image Files (*.tif,*.tiff)';...
-    '*.*',  'All Files (*.*)'},'File Selector');
-
-cd(handles.PathName);
-axes(handles.ImageShow);
-testImage = imread(handles.IMname);
-
-handles.merge = testImage;
-[handles.IMrows,handles.IMcols,~] = size(handles.merge);
-
-handles.globalImage = testImage;
-
-handles.r = cat(3, handles.merge(:,:,1), zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols));
-handles.g = cat(3, zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,2), zeros(handles.IMrows,handles.IMcols));
-handles.b = cat(3, zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,3));
-
-imshow(handles.merge);
-set(handles.ImageShow,'XTick',[]);
-set(handles.ImageShow,'YTick',[]);
-
-set(handles.mergeradio,'Value',1)
-set(handles.redradio,'Value',0)
-set(handles.greenradio,'Value',0)
-set(handles.blueradio,'Value',0)
-
-zoom on;
-
-set(handles.redradio,'Enable','on')
-set(handles.greenradio,'Enable','on')
-set(handles.blueradio,'Enable','on')
-set(handles.mergeradio,'Enable','on')
-set(handles.horzvert,'Enable','on')
-set(handles.rotateme,'Enable','on')
-
-guidata(hObject, handles);
-
-% --- Executes on button press in drawROIbutton.
-function drawROIbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to drawROIbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-axes(handles.ImageShow);
-handles.mask = roipoly; 
-
-handles.I = zeros(size(handles.merge));
-for i = 1:size(handles.merge,3);
-    tempImage = handles.merge(:,:,i);
-    tempImage(handles.mask == 0) = 0;
-    handles.I(:,:,i) = tempImage;
-end
-
-[handles.borders,~] = bwboundaries(handles.mask);
-
-guidata(hObject, handles);
-
-
-
-
 
 
 % --- Executes on button press in loaddefaultsbutton.
@@ -1363,3 +1296,108 @@ end
 
 
 
+
+
+% --------------------------------------------------------------------
+function loadImage_Callback(hObject, eventdata, handles)
+% hObject    handle to loadImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function loadrgb_Callback(hObject, eventdata, handles)
+% hObject    handle to loadrgb (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% --------------------------------------------------------------------
+function loadTri_Callback(hObject, eventdata, handles)
+% hObject    handle to loadTri (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+[handles.IMname,handles.PathName,~] = uigetfile({'*.tif;*.tiff',...
+    'Image Files (*.tif,*.tiff)';...
+    '*.*',  'All Files (*.*)'},'File Selector');
+
+cd(handles.PathName);
+axes(handles.ImageShow);
+testImage = imread(handles.IMname);
+
+handles.merge = testImage;
+[handles.IMrows,handles.IMcols,~] = size(handles.merge);
+
+handles.globalImage = testImage;
+
+handles.r = cat(3, handles.merge(:,:,1), zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols));
+handles.g = cat(3, zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,2), zeros(handles.IMrows,handles.IMcols));
+handles.b = cat(3, zeros(handles.IMrows,handles.IMcols), zeros(handles.IMrows,handles.IMcols), handles.merge(:,:,3));
+
+imshow(handles.merge);
+set(handles.ImageShow,'XTick',[]);
+set(handles.ImageShow,'YTick',[]);
+
+set(handles.mergeradio,'Value',1)
+set(handles.redradio,'Value',0)
+set(handles.greenradio,'Value',0)
+set(handles.blueradio,'Value',0)
+
+zoom on;
+
+set(handles.redradio,'Enable','on')
+set(handles.greenradio,'Enable','on')
+set(handles.blueradio,'Enable','on')
+set(handles.mergeradio,'Enable','on')
+set(handles.horzvert,'Enable','on')
+set(handles.rotateme,'Enable','on')
+
+guidata(hObject, handles);
+
+% --------------------------------------------------------------------
+function loadDi_Callback(hObject, eventdata, handles)
+% hObject    handle to loadDi (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function loadMono_Callback(hObject, eventdata, handles)
+% hObject    handle to loadMono (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function loadgray_Callback(hObject, eventdata, handles)
+% hObject    handle to loadgray (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function roiOptions_Callback(hObject, eventdata, handles)
+% hObject    handle to roiOptions (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function drawROI_Callback(hObject, eventdata, handles)
+% hObject    handle to roiOptions (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+axes(handles.ImageShow);
+handles.mask = roipoly; 
+
+handles.I = zeros(size(handles.merge));
+for i = 1:size(handles.merge,3);
+    tempImage = handles.merge(:,:,i);
+    tempImage(handles.mask == 0) = 0;
+    handles.I(:,:,i) = tempImage;
+end
+
+[handles.borders,~] = bwboundaries(handles.mask);
+
+guidata(hObject, handles);
