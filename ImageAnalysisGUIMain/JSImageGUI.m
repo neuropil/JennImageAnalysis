@@ -179,7 +179,9 @@ function sl_c_Callback(hObject, eventdata, handles)
 
 cell = get(hObject,'Value');
 
-set(handles.cellVal,'String', num2str(cell));
+roundVal = round(cell*1000)/1000;
+
+set(handles.cellVal,'String', num2str(roundVal));
 updateVal = get(handles.cellVal,'String');
 set(hObject,'Value', str2double(updateVal));
 
@@ -195,7 +197,7 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject, 'SliderStep', [0.01 0.1])
+set(hObject, 'SliderStep', [0.03 0.3])
 set(hObject,'Min',0.01)
 set(hObject,'Max',0.3)
 set(hObject,'Value',0.05)
@@ -233,7 +235,9 @@ function sl_mcs_Callback(hObject, eventdata, handles)
 
 mincell = get(hObject,'Value');
 
-set(handles.mincellsizeVal,'String', num2str(mincell));
+roundVal = round(mincell);
+
+set(handles.mincellsizeVal,'String', num2str(roundVal));
 updateVal = get(handles.mincellsizeVal,'String');
 set(hObject,'Value', str2double(updateVal));
 
@@ -246,7 +250,10 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.03 0.3])
+small_step = 1/(30 - 3);
+large_step = small_step * 10;
+
+set(hObject,'SliderStep', [small_step large_step])
 set(hObject,'Min',3)
 set(hObject,'Max',30)
 set(hObject,'Value',3)
@@ -337,7 +344,7 @@ function sl_b_Callback(hObject, eventdata, handles)
 
 boundary = get(hObject,'Value');
 
-roundVal = round(boundary);
+roundVal = round(boundary*1000)/1000;
 
 set(handles.boundaryVal,'String', num2str(roundVal));
 updateVal = get(handles.boundaryVal,'String');
@@ -351,7 +358,7 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.001 0.01])
+set(hObject,'SliderStep', [0.1 0.2])
 set(hObject,'Min',0)
 set(hObject,'Max',0.01)
 set(hObject,'Value',0)
@@ -455,7 +462,7 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.05 0.25])
+set(hObject,'SliderStep', [0.1 0.2])
 set(hObject,'Min',0)
 set(hObject,'Max',10)
 set(hObject,'Value',1)
@@ -511,7 +518,10 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.01 0.1])
+small_step = 1/(30 - 3);
+large_step = small_step * 10;
+
+set(hObject,'SliderStep', [small_step large_step])
 set(hObject,'Min',3)
 set(hObject,'Max',30)
 set(hObject,'Value',16)
@@ -547,7 +557,9 @@ function sl_bp_Callback(hObject, eventdata, handles)
 
 backPercent = get(hObject,'Value');
 
-set(handles.backpercentVal,'String', num2str(backPercent));
+roundVal = round(backPercent*100)/100;
+
+set(handles.backpercentVal,'String', num2str(roundVal));
 updateVal = get(handles.backpercentVal,'String');
 set(hObject,'Value', str2double(updateVal));
 
@@ -561,7 +573,7 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-set(hObject,'SliderStep', [0.01 0.1])
+set(hObject,'SliderStep', [0.02 0.2])
 set(hObject,'Min',0.1)
 set(hObject,'Max',0.6)
 set(hObject,'Value',0.16)
@@ -661,8 +673,8 @@ set(handles.sl_mws,'Value',30);
 set(handles.cellVal,'String','0.05');
 set(handles.sl_c,'Value',0.05);
 
-set(handles.mincellsizeVal,'String','2');
-set(handles.sl_mcs,'Value',2);
+set(handles.mincellsizeVal,'String','3');
+set(handles.sl_mcs,'Value',3);
 
 set(handles.maxcellsizeVal,'String','40');
 set(handles.sl_macs,'Value',40);
@@ -1121,22 +1133,22 @@ set(handles.mincellsizeVal,'String',get(handles.mics_user,'String'));
 set(handles.sl_mcs,'Value',str2double(get(handles.mics_user,'String')));
 
 set(handles.maxcellsizeVal,'String',get(handles.macs_user,'String'));
-set(handles.sl_macs,'Value',str2double(get(handles.mics_user,'String')));
+set(handles.sl_macs,'Value',str2double(get(handles.macs_user,'String')));
 
 set(handles.boundaryVal,'String',get(handles.b_user,'String'));
-set(handles.sl_b,'Value',str2double(get(handles.mics_user,'String')));
+set(handles.sl_b,'Value',str2double(get(handles.b_user,'String')));
 
 set(handles.blursizeVal,'String',get(handles.bsi_user,'String'));
-set(handles.sl_bs,'Value',str2double(get(handles.mics_user,'String')));
+set(handles.sl_bs,'Value',str2double(get(handles.bsi_user,'String')));
 
 set(handles.blurspreadVal,'String',get(handles.bsp_user,'String'));
-set(handles.sl_bsp,'Value',str2double(get(handles.mics_user,'String')));
+set(handles.sl_bsp,'Value',str2double(get(handles.bsp_user,'String')));
 
 set(handles.cellpixelsVal,'String',get(handles.cp_user,'String'));
-set(handles.sl_cp,'Value',str2double(get(handles.mics_user,'String')));
+set(handles.sl_cp,'Value',str2double(get(handles.cp_user,'String')));
 
 set(handles.backpercentVal,'String',get(handles.bp_user,'String'));
-set(handles.sl_bp,'Value',str2double(get(handles.mics_user,'String')));
+set(handles.sl_bp,'Value',str2double(get(handles.bp_user,'String')));
 
 guidata(hObject, handles);
 
