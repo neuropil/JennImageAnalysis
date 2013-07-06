@@ -22,7 +22,7 @@ function varargout = JSImageGUI(varargin)
 
 % Edit the above text to modify the response to help JSImageGUI
 
-% Last Modified by GUIDE v2.5 05-Jul-2013 21:18:33
+% Last Modified by GUIDE v2.5 05-Jul-2013 20:59:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -70,6 +70,10 @@ set(handles.cellsignTog, 'BackgroundColor',[1 1 0])
 set(handles.findedgeTog,'Value',1);
 set(handles.findedgeTog, 'BackgroundColor',[1 1 0])
 
+set(handles.redradio,'Enable','off')
+set(handles.greenradio,'Enable','off')
+set(handles.blueradio,'Enable','off')
+set(handles.mergeradio,'Enable','off')
 set(handles.horzvert,'Enable','off')
 
 set(handles.rotateme,'Enable','off')
@@ -1217,8 +1221,17 @@ imshow(handles.merge);
 set(handles.ImageShow,'XTick',[]);
 set(handles.ImageShow,'YTick',[]);
 
+set(handles.mergeradio,'Value',1)
+set(handles.redradio,'Value',0)
+set(handles.greenradio,'Value',0)
+set(handles.blueradio,'Value',0)
+
 zoom on;
 
+set(handles.redradio,'Enable','on')
+set(handles.greenradio,'Enable','on')
+set(handles.blueradio,'Enable','on')
+set(handles.mergeradio,'Enable','on')
 set(handles.horzvert,'Enable','on')
 set(handles.rotateme,'Enable','on')
 
@@ -1308,7 +1321,6 @@ function red_chan_v_Callback(hObject, eventdata, handles)
 set(hObject,'Checked','on')
 set(handles.green_chan_v,'Checked','off')
 set(handles.blue_chan_v,'Checked','off')
-set(handles.merge_chan_v,'Checked','off')
 
 % checkedStatus = get(handles.red_chan_v,'Checked')
 
@@ -1333,7 +1345,6 @@ function green_chan_v_Callback(hObject, eventdata, handles)
 set(hObject,'Checked','on')
 set(handles.red_chan_v,'Checked','off')
 set(handles.blue_chan_v,'Checked','off')
-set(handles.merge_chan_v,'Checked','off')
 
 handles.globalImage = handles.g;
 
@@ -1354,33 +1365,11 @@ function blue_chan_v_Callback(hObject, eventdata, handles)
 set(hObject,'Checked','on')
 set(handles.red_chan_v,'Checked','off')
 set(handles.green_chan_v,'Checked','off')
-set(handles.merge_chan_v,'Checked','off')
 
 handles.globalImage = handles.b;
 
 axes(handles.ImageShow);
 imshow(handles.b);
-set(handles.ImageShow,'XTick',[]);
-set(handles.ImageShow,'YTick',[]);
-
-zoom on;
-
-guidata(hObject, handles);
-
-% --------------------------------------------------------------------
-function merge_chan_v_Callback(hObject, eventdata, handles)
-% hObject    handle to merge_chan_v (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-set(hObject,'Checked','on')
-set(handles.red_chan_v,'Checked','off')
-set(handles.green_chan_v,'Checked','off')
-set(handles.blue_chan_v,'Checked','off')
-
-handles.globalImage = handles.merge;
-
-axes(handles.ImageShow);
-imshow(handles.merge);
 set(handles.ImageShow,'XTick',[]);
 set(handles.ImageShow,'YTick',[]);
 
@@ -1399,8 +1388,6 @@ set(handles.blue_chan_a,'Checked','off')
 
 handles.image2analyze = handles.r;
 
-guidata(hObject, handles);
-
 % --------------------------------------------------------------------
 function green_chan_a_Callback(hObject, eventdata, handles)
 % hObject    handle to green_chan_a (see GCBO)
@@ -1412,8 +1399,6 @@ set(handles.blue_chan_a,'Checked','off')
 
 handles.image2analyze = handles.g;
 
-guidata(hObject, handles);
-
 % --------------------------------------------------------------------
 function blue_chan_a_Callback(hObject, eventdata, handles)
 % hObject    handle to blue_chan_a (see GCBO)
@@ -1424,8 +1409,3 @@ set(handles.red_chan_a,'Checked','off')
 set(handles.green_chan_a,'Checked','off')
 
 handles.image2analyze = handles.b;
-
-guidata(hObject, handles);
-
-
-
